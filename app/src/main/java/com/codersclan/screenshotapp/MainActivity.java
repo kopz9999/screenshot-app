@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.codersclan.screenshotapp.utils.FileManager;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -49,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                this.processImageUri(resultUri);
+                this.processCropResult(result.getUri());
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
@@ -59,8 +59,47 @@ public class MainActivity extends AppCompatActivity {
 
     // Setup image from Uri
     private void processImageUri(Uri imageUri) {
-        ImageView targetImageView = (ImageView) findViewById(R.id.targetImageView);
-        Picasso.with(this).load(imageUri).into(targetImageView);
+        final ImageView targetImageView = (ImageView) findViewById(R.id.targetImageView);
+        final Uri imageUriParam = imageUri;
+        // targetImageView.postInvalidateDelayed(5000);
+        Thread thread = new Thread()
+        {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() //run on ui thread
+                {
+                    public void run()
+                    {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        targetImageView.setImageDrawable(null); // <--- added to force redraw of ImageView
+                        targetImageView.setImageURI(imageUriParam);
+                    }
+                });
+            }
+        };
+        thread.start();
+    }
+
+    private void processCropResult(Uri resultUri) {
+        // File myFile = new File(resultUri.toString());
+        // this.currentImagePath = myFile.getAbsolutePath();
+        String sandbox = android.os.Environment.getExternalStorageDirectory()
+                + File.separator + "ScreenshotApp" ;;
+        File resultFile = new File(resultUri.getPath());
+        File sandboxDirectory = new File(sandbox);
+        sandboxDirectory.mkdirs();
+        File outputFile = new File(sandboxDirectory, resultFile.getName());
+        try {
+            FileManager.copyFile(resultFile, outputFile);
+            this.currentImagePath = outputFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.processImageUri(resultUri);
     }
 
     private void setImage() {

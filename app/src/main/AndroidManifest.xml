@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,17 +23,17 @@
         </activity>
         <service
             android:name=".ScreenshotService"
+            android:process="com.codersclan.screenshotapp.screenshot_service"
             android:exported="false"/>
         <!--
         <receiver
-            android:name=".ScreenshotReceiver"
-            android:enabled="true" >
+            android:name=".StartServiceAtBootReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:label="StartServiceAtBootReceiver" >
             <intent-filter>
-                <action android:name="com.android.camera.NEW_PICTURE" />
-                <action android:name="android.hardware.action.NEW_PICTURE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="image/*" />
-
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
         -->
