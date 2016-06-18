@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,66 +27,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class MainActivity extends AppCompatActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        setContentView(R.layout.activity_main);
-    }
+    private String currentImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setImage();
+        this.verifyService();
     }
 
     public void onCropClick(View view) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.test);
-        // CropImageView cropImageView = (CropImageView) findViewById(R.id.cropImageView);
-        // cropImageView.setImageBitmap(bitmap);
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString() + "/Download";
-        File f = new File( extStorageDirectory ) ;
-        File list[] = f.listFiles();
-        File file = new File(extStorageDirectory, "test.jpg");
-        FileOutputStream outStream = null;
-        try {
-            outStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // List<String> myList = new ArrayList<String>();
-
-        // String root_sd = Environment.getRootDirectory().toString();
-        // String imageUri = "drawable://" + R.drawable.test;
-        String imageUri = extStorageDirectory + "/test.jpg";
-
-        // File file = new File( root_sd ) ;
-        // File list[] = file.listFiles();
-        // String filePath = list[0].getAbsolutePath();
-
-        //
-        // Uri uri =  Uri.parse( "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/287.jpg" );
-        Uri uri =  Uri.fromFile(new File(imageUri));
-        // Uri uri = Uri.parse("android.resource://com.codersclan.screenshotapp/drawable/test.jpg");;
-        // CropImageView cropImageView = (CropImageView) findViewById(R.id.cropImageView);
-        // cropImageView.setImageUriAsync(uri);
-        // Toast.makeText(this, "test test",
-        //         Toast.LENGTH_LONG).show();
-        // Uri uri =  Uri.parse( "http://wp.patheos.com.s3.amazonaws.com/blogs/faithwalkers/files/2013/03/bigstock-Test-word-on-white-keyboard-27134336.jpg" );
+        Uri uri =  Uri.fromFile(new File(this.currentImagePath));
         CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .start(this);
-    }
-
-    private void processImageUri(Uri imageUri) {
-        ImageView targetImageView = (ImageView) findViewById(R.id.targetImageView);
-        Picasso.with(this).load(imageUri).into(targetImageView);
-        // targetImageView
     }
 
     @Override
@@ -100,4 +56,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    // Setup image from Uri
+    private void processImageUri(Uri imageUri) {
+        ImageView targetImageView = (ImageView) findViewById(R.id.targetImageView);
+        Picasso.with(this).load(imageUri).into(targetImageView);
+    }
+
+    private void setImage() {
+        Bundle b = getIntent().getExtras();
+        if (b == null) return;
+        if (!b.containsKey("imagePath")) return;
+        this.currentImagePath = b.getString("imagePath");
+        this.processImageUri( Uri.fromFile(new File(this.currentImagePath)) );
+    }
+
+    private void verifyService() {
+        Intent mServiceIntent;
+        if (ScreenshotService.serviceRunning) return;
+        mServiceIntent = new Intent(this, ScreenshotService.class);
+        this.startService(mServiceIntent);
+    }
+
 }

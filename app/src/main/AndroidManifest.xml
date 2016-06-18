@@ -19,6 +19,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".ScreenshotService"
+            android:exported="false"/>
+        <!--
+        <receiver
+            android:name=".ScreenshotReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.android.camera.NEW_PICTURE" />
+                <action android:name="android.hardware.action.NEW_PICTURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+
+            </intent-filter>
+        </receiver>
+        -->
     </application>
 
 </manifest>
