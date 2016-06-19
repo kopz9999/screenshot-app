@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setImage();
-        this.verifyService();
     }
 
     public void onCropClick(View view) {
