@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.adobe.creativesdk.aviary.AdobeImageIntent;
 import com.codersclan.screenshotapp.utils.FileManager;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -28,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class MainActivity extends AppCompatActivity {
+    /* TODO: Consider Removing */
     private String currentImagePath;
 
     @Override
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         this.setImage();
     }
 
+    /* TODO: Remove */
     public void onCropClick(View view) {
         Uri uri =  Uri.fromFile(new File(this.currentImagePath));
         CropImage.activity(uri)
@@ -44,14 +47,21 @@ public class MainActivity extends AppCompatActivity {
                 .start(this);
     }
 
+    public void onEditClick(View view) {
+        Uri uri =  Uri.fromFile(new File(this.currentImagePath));
+        Intent imageEditorIntent = new AdobeImageIntent.Builder(this)
+                .setData(uri)
+                .build();
+        startActivityForResult(imageEditorIntent, 1);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                this.processCropResult(result.getUri());
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 1:
+                    this.processAdobeImageEditorResult(data.getData());
+                    break;
             }
         }
     }
@@ -81,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    private void processAdobeImageEditorResult(Uri resultUri) {
+        this.currentImagePath = resultUri.getPath();
+        this.processImageUri(resultUri);
     }
 
     private void processCropResult(Uri resultUri) {
