@@ -175,6 +175,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:clickable="true"
+            android:onClick="onShareClick"
             >
 
             <ImageView

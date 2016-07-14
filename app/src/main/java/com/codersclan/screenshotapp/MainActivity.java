@@ -55,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(imageEditorIntent, 1);
     }
 
+    public void onShareClick(View view) {
+        Uri uri =  Uri.fromFile(new File(this.currentImagePath));
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        shareIntent.setType("image/png");
+        startActivity(Intent.createChooser(shareIntent, "Share"));
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
