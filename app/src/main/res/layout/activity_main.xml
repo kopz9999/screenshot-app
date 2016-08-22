@@ -27,67 +27,21 @@
         android:layout_height="wrap_content" android:orientation="horizontal"
         android:layout_alignParentBottom="true" style="@android:style/ButtonBar"
         >
+
         <LinearLayout
-            android:id="@+id/drawButton"
+            android:id="@+id/cropButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
             android:clickable="true"
-            android:onClick="onEditClick"
+            android:onClick="onCropClick"
             >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_brush_black_24dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/menu_draw"/>
-
-        </LinearLayout>
-
-        <!--
-        <LinearLayout
-            android:id="@+id/cropButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onCropClick">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_crop_black_24dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:text="@string/menu_crop"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/cropButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onCropClick">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:src="@drawable/ic_crop_black_24dp"/>
 
             <TextView
@@ -106,6 +60,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:clickable="true"
+            android:onClick="onDrawClick"
             >
 
             <ImageView
@@ -152,6 +107,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:clickable="true"
+            android:onClick="onTextClick"
             >
 
             <ImageView
@@ -166,7 +122,6 @@
                 android:text="@string/menu_text"/>
 
         </LinearLayout>
-        -->
         <LinearLayout
             android:id="@+id/shareButton"
             android:layout_width="wrap_content"

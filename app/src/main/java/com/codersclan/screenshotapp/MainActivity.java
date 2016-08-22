@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.adobe.creativesdk.aviary.AdobeImageIntent;
+import com.adobe.creativesdk.aviary.internal.filters.ToolLoaderFactory;
 import com.codersclan.screenshotapp.utils.FileManager;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -37,16 +38,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setImage();
+        // this.initImagePath( "/sdcard/test.jpg" );
+    }
+
+    public void onCropClick(View view) {
+        this.launchEditorWithTools(new ToolLoaderFactory.Tools[]{ToolLoaderFactory.Tools.CROP});
+    }
+
+    public void onDrawClick(View view) {
+        this.launchEditorWithTools(new ToolLoaderFactory.Tools[]{ToolLoaderFactory.Tools.DRAW});
+    }
+
+    public void onShapesClick(View view) {
+    }
+
+    public void onTextClick(View view) {
+        this.launchEditorWithTools(new ToolLoaderFactory.Tools[]{ToolLoaderFactory.Tools.TEXT});
     }
 
     /* TODO: Remove */
-    public void onCropClick(View view) {
-        Uri uri =  Uri.fromFile(new File(this.currentImagePath));
-        CropImage.activity(uri)
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .start(this);
-    }
-
     public void onEditClick(View view) {
         Uri uri =  Uri.fromFile(new File(this.currentImagePath));
         Intent imageEditorIntent = new AdobeImageIntent.Builder(this)
@@ -74,6 +84,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void launchEditorWithTools(ToolLoaderFactory.Tools[] mTools) {
+        Uri uri =  Uri.fromFile(new File(this.currentImagePath));
+        Intent imageEditorIntent = new AdobeImageIntent.Builder(this)
+                .setData(uri)
+                .withToolList(mTools)
+                .build();
+        startActivityForResult(imageEditorIntent, 1);
+    }
+
+    /* NOTE: Gear Logic Begins here */
 
     // Setup image from Uri
     private void processImageUri(Uri imageUri) {
@@ -107,29 +128,15 @@ public class MainActivity extends AppCompatActivity {
         this.processImageUri(resultUri);
     }
 
-    private void processCropResult(Uri resultUri) {
-        // File myFile = new File(resultUri.toString());
-        // this.currentImagePath = myFile.getAbsolutePath();
-        String sandbox = android.os.Environment.getExternalStorageDirectory()
-                + File.separator + "ScreenshotApp" ;;
-        File resultFile = new File(resultUri.getPath());
-        File sandboxDirectory = new File(sandbox);
-        sandboxDirectory.mkdirs();
-        File outputFile = new File(sandboxDirectory, resultFile.getName());
-        try {
-            FileManager.copyFile(resultFile, outputFile);
-            this.currentImagePath = outputFile.getAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.processImageUri(resultUri);
-    }
-
     private void setImage() {
         Bundle b = getIntent().getExtras();
         if (b == null) return;
         if (!b.containsKey("imagePath")) return;
-        this.currentImagePath = b.getString("imagePath");
+        this.initImagePath(b.getString("imagePath"));
+    }
+
+    private void initImagePath(String imagePath) {
+        this.currentImagePath = imagePath;
         this.processImageUri( Uri.fromFile(new File(this.currentImagePath)) );
     }
 
