@@ -1,11 +1,15 @@
 package com.codersclan.screenshotapp;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,6 +36,7 @@ import android.graphics.BitmapFactory;
 public class MainActivity extends AppCompatActivity {
     /* TODO: Consider Removing */
     private String currentImagePath;
+    public final String TAG = "DEBUG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +71,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onShareClick(View view) {
+        List<Intent> intentShareList = new ArrayList<Intent>();
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(shareIntent, 0);
+
+        for (ResolveInfo resInfo : resolveInfoList) {
+            String packageName = resInfo.activityInfo.packageName;
+            String name = resInfo.activityInfo.name;
+            Log.d(TAG, "Package Name : " + packageName);
+            Log.d(TAG, "Name : " + name);
+
+            if (packageName.contains("com.facebook") ||
+                    packageName.contains("com.twitter.android") ||
+                    packageName.contains("com.google.android.apps.plus") ||
+                    packageName.contains("com.google.android.gm")) {
+
+                if (name.contains("com.twitter.android.DMActivity")) {
+                    continue;
+                }
+
+                Intent intent = this.getCurrentImageIntent();
+                intent.setComponent(new ComponentName(packageName, name));
+                intentShareList.add(intent);
+            }
+        }
+
+        Intent intent = this.getCurrentImageIntent();
+        intent.setComponent(new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity"));
+        intentShareList.add(1, intent);
+
+        if (intentShareList.isEmpty()) {
+            Toast.makeText(MainActivity.this, "No apps to share !", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent chooserIntent = Intent.createChooser(intentShareList.remove(0), "Share via");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentShareList.toArray(new Parcelable[]{}));
+            startActivity(chooserIntent);
+        }
+    }
+
+    private Intent getCurrentImageIntent() {
         Uri uri =  Uri.fromFile(new File(this.currentImagePath));
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         shareIntent.setType("image/png");
-        startActivity(Intent.createChooser(shareIntent, "Share"));
+        return shareIntent;
     }
 
     @Override
