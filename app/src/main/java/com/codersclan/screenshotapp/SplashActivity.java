@@ -93,7 +93,7 @@ public class SplashActivity extends AppCompatActivity {
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
+        mContentView = findViewById(R.id.logo);
         ImageView mImageView = (ImageView)findViewById(R.id.logo);
 
 
