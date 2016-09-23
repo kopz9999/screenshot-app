@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         /* 1) Add the Gradle Retrolambda Plugin */
         classpath 'me.tatarka:gradle-retrolambda:3.3.0-beta3'
 
