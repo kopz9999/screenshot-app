@@ -1,16 +1,15 @@
 <resources>
-    <string name="app_name">ScreenshotApp</string>
+    <string name="app_name">Snippy</string>
     <string name="menu_crop">Crop</string>
     <string name="menu_draw">Draw</string>
     <string name="menu_shapes">Shapes</string>
     <string name="menu_text">Text</string>
     <string name="menu_share">Share</string>
 
-    <string name="title_activity_splash">ScreenshotApp</string>
-    <string name="dummy_content">Screenshot App</string>
+    <string name="title_activity_splash">Snippy</string>
+    <string name="dummy_content">Snippy</string>
     <string name="splash_summary">
-        You can start to edit your screenshots after taking them.
-        Click on the picture to exit</string>
+        You can instantly edit and share your screenshots after taking them. Click the picture to exit and take a screenshot!</string>
 
     <string name="title_activity_test">Test</string>
     <string name="dummy_button">Dummy Button</string>
