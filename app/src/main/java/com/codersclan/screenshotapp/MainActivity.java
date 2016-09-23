@@ -56,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
         this.launchEditorWithTools(new ToolLoaderFactory.Tools[]{ToolLoaderFactory.Tools.DRAW});
     }
 
-    public void onShapesClick(View view) {
+    public void onMemeClick(View view) {
+        this.launchEditorWithTools(new ToolLoaderFactory.Tools[]{ToolLoaderFactory.Tools.MEME});
     }
 
     public void onTextClick(View view) {

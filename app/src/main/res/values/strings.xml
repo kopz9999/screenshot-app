@@ -2,6 +2,7 @@
     <string name="app_name">Snippy</string>
     <string name="menu_crop">Crop</string>
     <string name="menu_draw">Draw</string>
+    <string name="menu_meme">Meme</string>
     <string name="menu_shapes">Shapes</string>
     <string name="menu_text">Text</string>
     <string name="menu_share">Share</string>

@@ -42,7 +42,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_crop_black_24dp"/>
+                android:src="@drawable/ic_crop_white_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_brush_black_24dp"/>
+                android:src="@drawable/ic_brush_white_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,18 +84,19 @@
             android:orientation="vertical"
             android:gravity="center"
             android:clickable="true"
+            android:onClick="onMemeClick"
             >
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_crop_square_black_24dp"/>
+                android:src="@drawable/ic_view_day_white_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:text="@string/menu_shapes"/>
+                android:text="@string/menu_meme"/>
 
         </LinearLayout>
 
@@ -113,7 +114,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_text_fields_black_24dp"/>
+                android:src="@drawable/ic_text_fields_white_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_share_black_24dp"/>
+                android:src="@drawable/ic_share_white_24dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
