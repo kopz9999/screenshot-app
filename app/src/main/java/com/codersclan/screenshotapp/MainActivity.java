@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.adobe.creativesdk.aviary.AdobeImageIntent;
 import com.adobe.creativesdk.aviary.internal.filters.ToolLoaderFactory;
+import com.codersclan.screenshotapp.utils.AllowedApps;
 import com.codersclan.screenshotapp.utils.FileManager;
+import com.codersclan.screenshotapp.utils.Helper;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -75,37 +77,29 @@ public class MainActivity extends AppCompatActivity {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        List<ResolveInfo> resolveInfoList = getPackageManager().queryIntentActivities(shareIntent, 0);
+        List<ResolveInfo> resolveInfoList =
+            getPackageManager().queryIntentActivities(shareIntent, 0);
 
-        for (ResolveInfo resInfo : resolveInfoList) {
-            String packageName = resInfo.activityInfo.packageName;
-            String name = resInfo.activityInfo.name;
-            Log.d(TAG, "Package Name : " + packageName);
-            Log.d(TAG, "Name : " + name);
+        for(AllowedApps allowedApp : Helper.orderedPackages) {
+            for (ResolveInfo resInfo : resolveInfoList) {
+                String packageName = resInfo.activityInfo.packageName;
+                String name = resInfo.activityInfo.name;
+                Log.d(TAG, "Package Name : " + packageName);
+                Log.d(TAG, "Name : " + name);
 
-            if (packageName.contains("com.facebook") ||
-                    packageName.contains("com.twitter.android") ||
-                    packageName.contains("com.google.android.apps.plus") ||
-                    packageName.contains("com.google.android.gm")) {
-
-                if (name.contains("com.twitter.android.DMActivity")) {
-                    continue;
+                if (packageName.contains(allowedApp.toString())) {
+                    Intent intent = this.getCurrentImageIntent();
+                    intent.setComponent(new ComponentName(packageName, name));
+                    intentShareList.add(intent);
                 }
-
-                Intent intent = this.getCurrentImageIntent();
-                intent.setComponent(new ComponentName(packageName, name));
-                intentShareList.add(intent);
             }
         }
-
-        Intent intent = this.getCurrentImageIntent();
-        intent.setComponent(new ComponentName("com.android.mms", "com.android.mms.ui.ComposeMessageActivity"));
-        intentShareList.add(1, intent);
 
         if (intentShareList.isEmpty()) {
             Toast.makeText(MainActivity.this, "No apps to share !", Toast.LENGTH_SHORT).show();
         } else {
-            Intent chooserIntent = Intent.createChooser(intentShareList.remove(0), "Share via");
+            Intent chooserIntent =
+                    Intent.createChooser(intentShareList.remove(intentShareList.size() - 1), "Share via");
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentShareList.toArray(new Parcelable[]{}));
             startActivity(chooserIntent);
         }
