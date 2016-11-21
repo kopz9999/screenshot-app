@@ -157,8 +157,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processAdobeImageEditorResult(Uri resultUri) {
+        final ImageView targetImageView = (ImageView) findViewById(R.id.targetImageView);
         this.currentImagePath = resultUri.getPath();
-        this.processImageUri(resultUri);
+        targetImageView.setImageURI(resultUri);
     }
 
     private void setImage() {

@@ -31,8 +31,9 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/CurrentScreenTheme">
+        </activity>
         <service
             android:name=".ScreenshotService"
             android:exported="false"

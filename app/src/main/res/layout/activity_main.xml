@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/gradient"
     tools:context="com.codersclan.screenshotapp.MainActivity">
     <!--
     <com.theartofdev.edmodo.cropper.CropImageView
@@ -23,9 +23,15 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:src="@drawable/test"/>
-    <LinearLayout android:id="@+id/footer" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:layout_alignParentBottom="true" style="@android:style/ButtonBar"
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         >
 
         <LinearLayout
